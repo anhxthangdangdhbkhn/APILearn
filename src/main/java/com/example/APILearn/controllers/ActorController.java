@@ -42,7 +42,7 @@ public class ActorController {
 
     }
 
-    //localhost:8080/api/v1/actors/list/3
+    //localhost:8080/api/v1/actors/list/10
     @RequestMapping(value = "/list/{pageNo}", method = GET)
     @ResponseBody
     ResponseEntity<ResponseObject> getActorPageNo (@PathVariable int pageNo) {
