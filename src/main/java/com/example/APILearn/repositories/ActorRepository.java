@@ -9,7 +9,10 @@ import java.util.List;
 
 // chua cac ham chua data
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
+
     List<Actor> findByFirstName(String name);
+
+    List<Actor> findByLastName(String name);
 
     @Query(value= "SELECT * FROM public.actor WHERE first_name LIKE ?1%", nativeQuery = true)
     List<Actor> searchFirstName(String name);

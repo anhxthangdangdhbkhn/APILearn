@@ -22,8 +22,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RequestMapping(path = "/api/v1/actors")
 public class ActorController {
 
-    // tao mot lan sau do dung thoi
-
     @Autowired
     private ActorRepository actorRepository;
 
@@ -42,19 +40,19 @@ public class ActorController {
 
     }
 
-    //localhost:8080/api/v1/actors/list/10
-    @RequestMapping(value = "/list/{pageNo}", method = GET)
+    //localhost:8080/api/v1/actors/page/10
+    @RequestMapping(value = "/page/{page}", method = GET)
     @ResponseBody
-    ResponseEntity<ResponseObject> getActorPageNo (@PathVariable int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo,5);
-        Page<Actor> page = actorRepository.findAll(pageable);
-        if(!page.isEmpty()){
+    ResponseEntity<ResponseObject> getActorPageNo (@PathVariable int page) {
+        Pageable pageable = PageRequest.of(page,5);
+        Page<Actor> actorPage = actorRepository.findAll(pageable);
+        if(!actorPage.isEmpty()){
             return  ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("OK","Query actor OK",page)
+                    new ResponseObject("OK","Query actor OK",actorPage)
                     );
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("FALSE","Cannot find list  actor with pageNo= "+ pageNo ,"")
+                    new ResponseObject("FALSE","Cannot find list  actor with pageNo= "+ page ,"")
             );
         }
 
@@ -84,24 +82,9 @@ public class ActorController {
 
     }
 
-//    @GetMapping("/{id}")
-//    ResponseEntity<ResponseObject> findById(@PathVariable Integer id){
-//        Optional<Actor> foundActor = actorRepository.findById(id);
-//        if(foundActor.isPresent()){
-//            return  ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("OK","Query actor OK",foundActor)
-//            );
-//        }else{
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                    new ResponseObject("FALSE","Cannot find actor with id= "+id ,"")
-//            );
-//        }
-//
-//    }
-
 
     // localhost:8080/api/v1/actors/firstName/Penelope
-    @GetMapping("/firstName/{find}")
+    @GetMapping("/firstname/find/{find}")
     ResponseEntity<ResponseObject> findByFirstName(@PathVariable String find){
         List<Actor> actorList = actorRepository.findByFirstName(find);
         if(actorList.size()>0){
@@ -116,7 +99,7 @@ public class ActorController {
     }
 
     // find fist name by keyword
-    @GetMapping("/firstName/by/{search}")
+    @GetMapping("/firstname/search/{search}")
     ResponseEntity<ResponseObject> searchFirstName(@PathVariable String search){
         List<Actor> actorList = actorRepository.searchFirstName(search);
         if(actorList.size()>0){
@@ -131,7 +114,21 @@ public class ActorController {
 
     }
 
-    @GetMapping("/lastName/by/{search}")
+    @GetMapping("/lastname/find/{find}")
+    ResponseEntity<ResponseObject> findByLastName(@PathVariable String find){
+        List<Actor> actorList = actorRepository.findByLastName(find);
+        if(actorList.size()>0){
+            return  ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("OK","Query actor OK with LastName= " + find,actorList)
+            );
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("FALSE","Cannot find actor with LastName= "+find ,"")
+            );
+        }
+    }
+
+    @GetMapping("/lastname/search/{search}")
     ResponseEntity<ResponseObject> searchLastName(@PathVariable String search){
         List<Actor> actorList = actorRepository.searchLastName(search);
         if(actorList.size()>0){
@@ -145,6 +142,8 @@ public class ActorController {
         }
 
     }
+
+
 
 
     @PostMapping("/insert")

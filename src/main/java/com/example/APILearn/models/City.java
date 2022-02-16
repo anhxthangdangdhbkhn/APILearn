@@ -1,57 +1,40 @@
 package com.example.APILearn.models;
 
-import javax.persistence.*;
+import lombok.*;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Set;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @Entity
-@Table(name ="city")
+@Table(name = "city")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "city_id", nullable = false)
     private int city_id;
 
+    @Column(name = "city", nullable = false)
     private String city;
-    private String country_id;
 
-    public City() {
-    }
 
-    public City(int city_id, String city, String country_id) {
-        this.city_id = city_id;
-        this.city = city;
-        this.country_id = country_id;
-    }
 
-    public int getCity_id() {
-        return city_id;
-    }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
-    }
 
-    public String getCity() {
-        return city;
-    }
+    @Column(name = "last_update")
+    private Timestamp last_update;
 
-    public void setCity(String city) {
-        this.city = city;
-    }
 
-    public String getCountry_id() {
-        return country_id;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="country_id", referencedColumnName ="country_id")
+    private Country country;
 
-    public void setCountry_id(String country_id) {
-        this.country_id = country_id;
-    }
 
-    @Override
-    public String toString() {
-        return "City{" +
-                "city_id=" + city_id +
-                ", city='" + city + '\'' +
-                ", country_id='" + country_id + '\'' +
-                '}';
-    }
+
+
 }

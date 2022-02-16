@@ -20,17 +20,17 @@ public class AddressController {
     @Autowired
     private AddressRepository addressRepository;
 
-    @GetMapping("")
+    @GetMapping("all")
     ResponseEntity<ResponseObject> getAllActors(){
-        List<Address> addressList = addressRepository.findAllAddress();
-        //List<Address> addressList = addressRepository.findAll();
+       // List<Address> addressList = addressRepository.findAllAddress();
+        List<Address> addressList = addressRepository.findAll();
         if(addressList.size() >0){
             return  ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("OK","Get all Address OK",addressList)
             );
         }else{
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("FALSE","all Address is empty","")
+                    new ResponseObject("FALSE","get all Address is empty","")
             );
         }
 
